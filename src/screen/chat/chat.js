@@ -7,9 +7,9 @@ export default class Chat extends Component {
         return (
             <View style={{ flex: 1 }}>
                 <LinearGradient 
-                colors={['pink','#707070']}
+                colors={['pink','purple']}
                 style={{ height: 50,backgroundColor:'#bdbdbdd4',justifyContent:'center',padding:5 }}>
-                    <Text style={{ fontWeight:'bold',fontSize:18, }}> Chat </Text>
+                    <Text style={{ fontWeight:'bold',fontSize:18,color:'white' }}> Chat </Text>
                 </LinearGradient>
             </View>
         )

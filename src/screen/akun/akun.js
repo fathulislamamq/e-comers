@@ -65,7 +65,7 @@ export default class Akun extends Component {
                 {this.state.token == '' ? (
 
                     <LinearGradient
-                        colors={['pink', '#707070']}
+                        colors={['pink', 'purple']}
                         style={{ height: 110, elevation: 5, alignItems: 'center', padding: 5 }}>
 
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -136,7 +136,7 @@ export default class Akun extends Component {
                         <View style={{ flex: 1 }}>
 
                             <LinearGradient
-                                colors={['pink', '#707070']}
+                                colors={['pink', 'purple']}
                                 style={{ flexDirection: 'row', height: 100, elevation: 5, alignItems: 'center', padding: 10 }}>
 
                                 <View style={{ borderRadius: 50, height: 80, width: 80, backgroundColor: 'white' }}>

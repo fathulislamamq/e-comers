@@ -9,6 +9,8 @@ import TabAkun from './tabAkun'
 import SetAkun from '../screen/akun/pengaturan/setAkun'
 import UbahProfil from '../screen/akun/pengaturan/ubahProfil'
 import AlamatSaya from '../screen/akun/pengaturan/alamatSaya'
+import DetailBarang from '../screen/akun/penjual/detailBarang'
+import TabTransaksi from './tabTransaksi'
 
 
 const Stack = createStackNavigator()
@@ -30,6 +32,11 @@ Navigation = () => {
                 {/* untuk pengaturan auth */}
                 <Stack.Screen name='Login' component={Login} />
                 <Stack.Screen name='Signup' component={Signup} />
+                {/* untuk barang */}
+                <Stack.Screen name='DetailBarang' component={DetailBarang} />
+                {/* untuk transaksi */}
+                <Stack.Screen name='TabTransaksi' component={TabTransaksi} />
+
             </Stack.Navigator>
         </NavigationContainer>
     )

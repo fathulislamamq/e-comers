@@ -55,7 +55,7 @@ export default class Login extends Component {
   render() {
     return (
       <LinearGradient
-        colors={['pink', '#707070']}
+        colors={['pink', 'purple']}
         style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
 
         <View style={{ height: 460, backgroundColor: '#bdbdbdd4', marginVertical: 50, width: 300, borderRadius: 5, padding: 10 }}>

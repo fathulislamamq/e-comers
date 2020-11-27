@@ -53,7 +53,7 @@ export default class Signup extends Component {
     render() {
         return (
             <LinearGradient 
-            colors={['pink', '#707070']}
+            colors={['pink', 'purple']}
             style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
 
                 <View style={{ backgroundColor: '#bdbdbdd4', height: 560, width: 300, borderRadius: 5, paddingHorizontal: 10, paddingVertical: 5 }}>

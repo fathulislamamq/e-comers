@@ -11,7 +11,7 @@ export default class Splash extends Component {
 
         return (
             <LinearGradient
-                colors={['pink', 'white']}
+                colors={['pink', 'purple']}
                 style={{ flex: 1 }}>
                 <View style={{ height: '90%', justifyContent: 'center', alignItems: 'center' }}>
                     <Image source={require('../../assets/image/tas_belanja_3d.png')} />

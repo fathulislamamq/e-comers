@@ -4,32 +4,76 @@ import LinearGradient from 'react-native-linear-gradient'
 import Swiper from 'react-native-swiper'
 import Icon from 'react-native-vector-icons/Ionicons'
 import ImagePicker from 'react-native-image-picker'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 export default class HalamanB extends Component {
 
-    seacrh = () => {
-        this.props.navigaation.navigate('Search')
+    constructor() {
+        super()
+        this.state = {
+            token: '',
+            data: [],
+            input: '',
+        }
     }
+
+
+    lihat = () => {
+        const url = 'http://lava-store.herokuapp.com/api/product'
+
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${this.state.token}`
+            }
+        })
+            .then((respon) => respon.json())
+            .then((resJson) => {
+                console.log(resJson[0].data);
+                this.setState({ data: resJson[0].data })
+            })
+            .catch((error) => {
+                console.log('errornya adalah: ' + error);
+            })
+    }
+
+    componentDidMount() {
+        AsyncStorage.getItem('token').then((token) => {
+            if (token != null) {
+                this.setState({ token: token },()=>{
+                    this.lihat()
+
+                })
+            } else {
+                console.log('gak ada token');
+            }
+        })
+    }
+
+    
 
     render() {
         return (
             <View style={{ flex: 1 }}>
 
                 <LinearGradient
-                    colors={['pink', '#707070']}
+                    colors={['pink', 'purple']}
                     style={styles.header}>
 
                     <TouchableOpacity
-                        onPress={() => this.seacrh()}
                         style={styles.seacrhBox}>
-
+                            
                         <View style={{ width: '15%' }}>
                             <Icon name='ios-search' size={20} />
                         </View>
 
                         <TextInput
                             placeholder='cari barang'
+                            value={this.state.input}
+                            onChangeText={(text) => this.setState({ input: text })}
                             style={{ width: '85%' }} />
 
 
@@ -337,99 +381,45 @@ export default class HalamanB extends Component {
                         </View>
                         <Text style={{ margin: 6, }}>Produk-produk yang baru masuk di Lava store, siapa tau kamu suka</Text>
 
-                        <View style={{ flexWrap: 'wrap', flexDirection: 'row', }}>
+                        <View style={{ flexWrap: 'wrap', flexDirection: 'row',}}>
 
-                            <View style={{ backgroundColor: 'white', width: '46.5%', height: 270, margin: 5 }}>
+                            {this.state.data.map((value, key) => {
+                                return (
+                                    <View key={key}>
 
-                                <View style={{ height: '50%', width: '100%', backgroundColor: 'pink', alignItems: 'center' }}>
+                                        <View
+                                            style={{ backgroundColor: 'white', width: 165, height: 270, margin: 5 }}>
 
-                                    <Image
-                                        style={{ resizeMode: 'cover' }}
-                                        source={require('../../assets/image/tas_belanja_3d.png')} />
+                                            <View style={{ height: '50%', width: '100%', backgroundColor: 'pink', alignItems: 'center' }}>
+                                                <Image
+                                                    source={{ uri: value.image }}
+                                                    style={{  height:'100%',width:'100%' }}
+                                                />
+                                            </View>
 
-                                </View>
+                                            <View style={{ padding: 5, height: '25%' }}>
+                                                <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>{value.name}</Text>
+                                                <Text>{'Rp ' + value.price}</Text>
+                                            </View>
 
-                                <View style={{ padding: 5, height: '25%' }}>
-                                    <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>Tas Belanja</Text>
+                                            <TouchableOpacity
+                                            onPress={()=>{
+                                                this.props.navigation.navigate('DetailBarang',{item:value})
+                                            }}
+                                                style={{ backgroundColor: 'black', borderRadius: 5, width: 100, height: 30, padding: 5, margin: 5 }}>
+                                                <Text style={{ color: 'white', fontWeight: 'bold' }}>selengkapnya</Text>
+                                            </TouchableOpacity>
 
-                                    <Text>Rp.450.000</Text>
+                                            <TouchableOpacity style={{ position: 'absolute', right: 5, bottom: 5 }}>
 
-                                </View>
+                                                <Icon name='heart' size={20} color='red' />
 
-                                <TouchableOpacity
-                                    style={{ backgroundColor: 'black', borderRadius: 5, width: 100, height: 30, padding: 5, margin: 5 }}>
-                                    <Text style={{ color: 'white', fontWeight: 'bold' }}>selengkapnya</Text>
-                                </TouchableOpacity>
+                                            </TouchableOpacity>
 
-                                <TouchableOpacity style={{ position: 'absolute', right: 5, bottom: 5 }}>
-
-                                    <Icon name='heart' size={20} color='red' />
-
-                                </TouchableOpacity>
-
-                            </View>
-
-                            <View style={{ backgroundColor: 'white', width: '46.5%', height: 270, margin: 5 }}>
-
-                                <View style={{ height: '50%', width: '100%', backgroundColor: 'pink', alignItems: 'center' }}>
-
-                                    <Image
-                                        style={{ resizeMode: 'cover' }}
-                                        source={require('../../assets/image/tas_belanja_3d.png')} />
-
-                                </View>
-
-                                <View style={{ padding: 5, height: '25%' }}>
-                                    <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>Tas Belanja</Text>
-
-                                    <Text>Rp.450.000</Text>
-
-                                </View>
-
-                                <TouchableOpacity
-                                    style={{ backgroundColor: 'black', borderRadius: 5, width: 100, height: 30, padding: 5, margin: 5 }}>
-                                    <Text style={{ color: 'white', fontWeight: 'bold' }}>selengkapnya</Text>
-                                </TouchableOpacity>
-
-                                <TouchableOpacity style={{ position: 'absolute', right: 5, bottom: 5 }}>
-
-                                    <Icon name='heart' size={20} color='red' />
-
-                                </TouchableOpacity>
-
-                            </View>
-
-
-                            <View style={{ backgroundColor: 'white', width: '46.5%', height: 270, margin: 5 }}>
-
-                                <View style={{ height: '50%', width: '100%', backgroundColor: 'pink', alignItems: 'center' }}>
-
-                                    <Image
-                                        style={{ resizeMode: 'cover' }}
-                                        source={require('../../assets/image/tas_belanja_3d.png')} />
-
-                                </View>
-
-                                <View style={{ padding: 5, height: '25%' }}>
-                                    <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>Tas Belanja</Text>
-
-                                    <Text>Rp.450.000</Text>
-
-                                </View>
-
-                                <TouchableOpacity
-                                    style={{ backgroundColor: 'black', borderRadius: 5, width: 100, height: 30, padding: 5, margin: 5 }}>
-                                    <Text style={{ color: 'white', fontWeight: 'bold' }}>selengkapnya</Text>
-                                </TouchableOpacity>
-
-                                <TouchableOpacity style={{ position: 'absolute', right: 5, bottom: 5 }}>
-
-                                    <Icon name='heart' size={20} color='red' />
-
-                                </TouchableOpacity>
-
-                            </View>
-
+                                        </View>
+                                    </View>
+                                )
+                            })}
 
                         </View>
                     </ScrollView>
