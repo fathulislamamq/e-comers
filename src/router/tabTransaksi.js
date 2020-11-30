@@ -16,7 +16,7 @@ function TabTransaksi(){
             indicatorStyle:{backgroundColor:'grey'}
         }}>
             <Top.Screen name='Keranjang' component={CheckOut} />
-            <Top.Screen name='Menunggu Pembayaran' component={BelumDibayar} />
+            <Top.Screen name='Belum bayar' component={BelumDibayar} />
             <Top.Screen name='Dikemas' component={Dikemas} />
             <Top.Screen name='Dikirim' component={Dikirim} />
             <Top.Screen name='Selesai' component={PesananSelesai} />

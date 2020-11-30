@@ -134,7 +134,7 @@ export default class Penjual extends Component {
         })
             .then((respon) => respon.json())
             .then((resJson) => {
-                console.log('ini resJson',resJson[0].data);
+                console.log('ini resJson', resJson[0].data);
                 this.setState({ data: resJson[0].data })
             })
             .catch((error) => {
@@ -295,19 +295,19 @@ export default class Penjual extends Component {
 
                 <ScrollView>
 
-                    <View style={{ flexWrap: 'wrap', flexDirection: 'row',alignItems:'center' }}>
+                    <View style={{ flexWrap: 'wrap', flexDirection: 'row', alignItems: 'center' }}>
 
                         {this.state.data.map((value, key) => {
                             return (
                                 <View key={key}>
 
-                                    <TouchableOpacity
+                                    <View
                                         style={{ backgroundColor: 'white', width: 170, height: 270, margin: 5 }}>
 
                                         <View style={{ height: '50%', width: '100%', alignItems: 'center' }}>
                                             <Image
                                                 source={{ uri: value.image }}
-                                                style={{ height:'100%',width:'100%' }}
+                                                style={{ height: '100%', width: '100%' }}
                                             />
                                         </View>
 
@@ -316,18 +316,34 @@ export default class Penjual extends Component {
                                             <Text>{'Rp ' + value.price}</Text>
                                         </View>
 
-                                        <TouchableOpacity
-                                            style={{ backgroundColor: 'black', borderRadius: 5, width: 100, height: 30, padding: 5, margin: 5 }}>
-                                            <Text style={{ color: 'white', fontWeight: 'bold' }}>selengkapnya</Text>
-                                        </TouchableOpacity>
 
-                                        <TouchableOpacity style={{ position: 'absolute', right: 5, bottom: 5 }}>
+                                        <View style={{ margin: 0.1 }}>
 
-                                            <Icon name='heart' size={20} color='red' />
+                                            <TouchableOpacity>
 
-                                        </TouchableOpacity>
+                                                <View
+                                                    style={{ height: 35, backgroundColor: 'red', justifyContent: 'center', alignItems: 'center' }}>
+                                                    <Text style={{ color: 'white' }}>Hapus</Text>
+                                                </View>
 
-                                    </TouchableOpacity>
+                                            </TouchableOpacity>
+
+                                        </View>
+
+                                        <View style={{ margin: 0.1 }}>
+
+                                            <TouchableOpacity>
+
+                                                <View
+                                                    style={{ height: 35, backgroundColor: 'black', justifyContent: 'center', alignItems: 'center' }}>
+                                                    <Text style={{ color: 'white' }}>Lihat</Text>
+                                                </View>
+
+                                            </TouchableOpacity>
+
+                                        </View>
+
+                                    </View>
                                 </View>
                             )
                         })}

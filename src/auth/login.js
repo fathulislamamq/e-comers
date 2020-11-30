@@ -9,10 +9,12 @@ export default class Login extends Component {
     visibel: true,
     email: '',
     password: '',
+    loading: false
   };
   signIn = () => {
     const { email, password } = this.state;
     const url = 'http://lava-store.herokuapp.com/api/login';
+    this.setState({ loading: true });
 
     fetch(url, {
       method: 'POST',
@@ -31,6 +33,7 @@ export default class Login extends Component {
         const { token } = resjson
         if (token) {
           AsyncStorage.setItem('token', token)
+          this.setState({ loading: false });
           ToastAndroid.show(
             'Anda Berasil Sign In',
             ToastAndroid.SHORT,
@@ -39,6 +42,7 @@ export default class Login extends Component {
           );
         } else if (resjson.error) {
           alert(resjson.error);
+          this.setState({ loading: false });
         } else {
           console.log(error);
         }
@@ -108,7 +112,14 @@ export default class Login extends Component {
               marginVertical: 10
             }}>
 
-            <Text style={{ color: 'white', fontWeight: 'bold' }}>Masuk</Text>
+            {this.state.loading ? (
+              <ActivityIndicator size={25} color="white" />
+            ) : (
+                <Text
+                  style={{ color: 'white', fontWeight: 'bold', }}>Masuk
+                </Text>
+              )}
+
 
           </TouchableOpacity>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>

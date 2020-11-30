@@ -4,13 +4,13 @@ import { Text, View, ScrollView, TouchableOpacity } from 'react-native'
 export default class CheckOut extends Component {
     render() {
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1,padding:5 }}>
 
                 <ScrollView>
 
                     <View>
 
-                        <TouchableOpacity style={{ flexDirection: 'row', height: 70,marginBottom:5,elevation:5 }}>
+                        <TouchableOpacity style={{ flexDirection: 'row', height: 80,marginBottom:5,elevation:5 }}>
 
                             <View style={{ backgroundColor: 'pink', width: '20%' }}>
 
@@ -30,13 +30,13 @@ export default class CheckOut extends Component {
 
                             <View style={{ width: '25%' }}>
 
-                                <TouchableOpacity style={{ backgroundColor: 'red', height: 35, justifyContent: 'center', alignItems: 'center'}}>
+                                <TouchableOpacity style={{ backgroundColor: 'red', height: 40, justifyContent: 'center', alignItems: 'center'}}>
 
                                     <Text style={{ color: 'white', fontWeight: 'bold' }}> hapus </Text>
 
                                 </TouchableOpacity>
 
-                                <TouchableOpacity style={{ backgroundColor: 'purple', height: 35,justifyContent: 'center', alignItems: 'center', }}>
+                                <TouchableOpacity style={{ backgroundColor: 'purple', height: 40,justifyContent: 'center', alignItems: 'center', }}>
 
                                     <Text style={{ color: 'white', fontWeight: 'bold' }}> check out </Text>
 
@@ -47,7 +47,7 @@ export default class CheckOut extends Component {
 
                         </TouchableOpacity>
 
-                        <TouchableOpacity style={{ flexDirection: 'row', height: 70,marginBottom:5,elevation:5 }}>
+                        <TouchableOpacity style={{ flexDirection: 'row', height: 80,marginBottom:5,elevation:5 }}>
 
                             <View style={{ backgroundColor: 'pink', width: '20%' }}>
 
@@ -67,13 +67,13 @@ export default class CheckOut extends Component {
 
                             <View style={{ width: '25%' }}>
 
-                                <TouchableOpacity style={{ backgroundColor: 'red', height: 35, justifyContent: 'center', alignItems: 'center'}}>
+                                <TouchableOpacity style={{ backgroundColor: 'red', height: 40, justifyContent: 'center', alignItems: 'center'}}>
 
                                     <Text style={{ color: 'white', fontWeight: 'bold' }}> hapus </Text>
 
                                 </TouchableOpacity>
 
-                                <TouchableOpacity style={{ backgroundColor: 'purple', height: 35,justifyContent: 'center', alignItems: 'center', }}>
+                                <TouchableOpacity style={{ backgroundColor: 'purple', height: 40,justifyContent: 'center', alignItems: 'center', }}>
 
                                     <Text style={{ color: 'white', fontWeight: 'bold' }}> check out </Text>
 

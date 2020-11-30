@@ -11,8 +11,8 @@ function TabAkun(){
         tabBarOptions={{
             indicatorStyle:{backgroundColor:'grey'}
         }}>
-            <Top.Screen name='Pembeli' component={Pembeli} />
-            <Top.Screen name='Penjual' component={Penjual} />
+            <Top.Screen name='Profil' component={Pembeli} />
+            <Top.Screen name='Toko' component={Penjual} />
         </Top.Navigator>
     )
 }

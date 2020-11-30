@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, TextInput, ScrollView, TouchableOpacity, Image, StyleSheet } from 'react-native'
+import { Text, View, TextInput, ScrollView, TouchableOpacity, Image, StyleSheet, ActivityIndicator } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import Swiper from 'react-native-swiper'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -15,12 +15,14 @@ export default class HalamanB extends Component {
             token: '',
             data: [],
             input: '',
+            loading: false
         }
     }
 
 
     lihat = () => {
         const url = 'http://lava-store.herokuapp.com/api/product'
+        this.setState({ loading: true });
 
         fetch(url, {
             method: 'GET',
@@ -33,17 +35,18 @@ export default class HalamanB extends Component {
             .then((respon) => respon.json())
             .then((resJson) => {
                 console.log(resJson[0].data);
-                this.setState({ data: resJson[0].data })
+                this.setState({ data: resJson[0].data, loading: false })
             })
             .catch((error) => {
                 console.log('errornya adalah: ' + error);
+                this.setState({ loading: false })
             })
     }
 
     componentDidMount() {
         AsyncStorage.getItem('token').then((token) => {
             if (token != null) {
-                this.setState({ token: token },()=>{
+                this.setState({ token: token }, () => {
                     this.lihat()
 
                 })
@@ -53,7 +56,7 @@ export default class HalamanB extends Component {
         })
     }
 
-    
+
 
     render() {
         return (
@@ -65,7 +68,7 @@ export default class HalamanB extends Component {
 
                     <TouchableOpacity
                         style={styles.seacrhBox}>
-                            
+
                         <View style={{ width: '15%' }}>
                             <Icon name='ios-search' size={20} />
                         </View>
@@ -381,7 +384,7 @@ export default class HalamanB extends Component {
                         </View>
                         <Text style={{ margin: 6, }}>Produk-produk yang baru masuk di Lava store, siapa tau kamu suka</Text>
 
-                        <View style={{ flexWrap: 'wrap', flexDirection: 'row',}}>
+                        <View style={{ flexWrap: 'wrap', flexDirection: 'row', }}>
 
                             {this.state.data.map((value, key) => {
                                 return (
@@ -393,7 +396,7 @@ export default class HalamanB extends Component {
                                             <View style={{ height: '50%', width: '100%', backgroundColor: 'pink', alignItems: 'center' }}>
                                                 <Image
                                                     source={{ uri: value.image }}
-                                                    style={{  height:'100%',width:'100%' }}
+                                                    style={{ height: '100%', width: '100%' }}
                                                 />
                                             </View>
 
@@ -403,9 +406,9 @@ export default class HalamanB extends Component {
                                             </View>
 
                                             <TouchableOpacity
-                                            onPress={()=>{
-                                                this.props.navigation.navigate('DetailBarang',{item:value})
-                                            }}
+                                                onPress={() => {
+                                                    this.props.navigation.navigate('DetailBarang', { item: value })
+                                                }}
                                                 style={{ backgroundColor: 'black', borderRadius: 5, width: 100, height: 30, padding: 5, margin: 5 }}>
                                                 <Text style={{ color: 'white', fontWeight: 'bold' }}>selengkapnya</Text>
                                             </TouchableOpacity>

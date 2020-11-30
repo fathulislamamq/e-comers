@@ -11,6 +11,7 @@ import UbahProfil from '../screen/akun/pengaturan/ubahProfil'
 import AlamatSaya from '../screen/akun/pengaturan/alamatSaya'
 import DetailBarang from '../screen/akun/penjual/detailBarang'
 import TabTransaksi from './tabTransaksi'
+import DetailChat from '../screen/chat/detailChat'
 
 
 const Stack = createStackNavigator()
@@ -34,6 +35,8 @@ Navigation = () => {
                 <Stack.Screen name='Signup' component={Signup} />
                 {/* untuk barang */}
                 <Stack.Screen name='DetailBarang' component={DetailBarang} />
+                {/* untuk chat */}
+                <Stack.Screen name='DetailChat' component={DetailChat} />
                 {/* untuk transaksi */}
                 <Stack.Screen name='TabTransaksi' component={TabTransaksi} />
 

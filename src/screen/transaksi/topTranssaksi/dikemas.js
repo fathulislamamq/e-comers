@@ -1,11 +1,100 @@
 import React, { Component } from 'react'
-import { Text, View } from 'react-native'
+import { Text, View, ScrollView, TouchableOpacity } from 'react-native'
 
 export default class Dikemas extends Component {
     render() {
         return (
-            <View>
-                <Text> Dikemas </Text>
+            <View style={{ flex: 1,padding:5 }}>
+
+                <ScrollView>
+
+                    <View>
+
+                        <TouchableOpacity style={{ flexDirection: 'row', height: 80, marginBottom: 5, elevation: 5 }}>
+
+                            <View style={{ backgroundColor: 'pink', width: '20%' }}>
+
+                                <Text> gambar </Text>
+
+                            </View>
+
+                            <View style={{ width: '55%', padding: 5, backgroundColor: 'white' }}>
+
+                                <Text style={{ fontWeight: 'bold', marginBottom: 5 }}> Nama Barang </Text>
+
+                                <Text> harga </Text>
+
+                                <Text style={{ fontWeight: 'bold' }}> Detail </Text>
+
+                            </View>
+
+                            <View style={{ width: '25%' }}>
+
+                                <TouchableOpacity style={{ backgroundColor: 'red', height: 40, justifyContent: 'center', alignItems: 'center' }}>
+
+                                    <Text style={{ color: 'white', fontWeight: 'bold' }}> ajukan </Text>
+
+                                    <Text style={{ color: 'white', fontWeight: 'bold' }}> pembatalan </Text>
+
+                                </TouchableOpacity>
+
+                                <TouchableOpacity style={{ backgroundColor: 'purple', height: 40, justifyContent: 'center', alignItems: 'center', }}>
+
+                                    <Text style={{ color: 'white', fontWeight: 'bold' }}> hubungi </Text>
+
+                                    <Text style={{ color: 'white', fontWeight: 'bold' }}> penjual </Text>
+                                </TouchableOpacity>
+
+
+                            </View>
+
+                        </TouchableOpacity>
+
+                        <TouchableOpacity style={{ flexDirection: 'row', height: 80, marginBottom: 5, elevation: 5 }}>
+
+                            <View style={{ backgroundColor: 'pink', width: '20%' }}>
+
+                                <Text> gambar </Text>
+
+                            </View>
+
+                            <View style={{ width: '55%', padding: 5, backgroundColor: 'white' }}>
+
+                                <Text style={{ fontWeight: 'bold', marginBottom: 5 }}> Nama Barang </Text>
+
+                                <Text> harga </Text>
+
+                                <Text style={{ fontWeight: 'bold' }}> Detail </Text>
+
+                            </View>
+
+                            <View style={{ width: '25%' }}>
+
+                                <TouchableOpacity style={{ backgroundColor: 'red', height: 40, justifyContent: 'center', alignItems: 'center' }}>
+
+                                    <Text style={{ color: 'white', fontWeight: 'bold' }}> ajukan </Text>
+
+                                    <Text style={{ color: 'white', fontWeight: 'bold' }}> pembatalan </Text>
+
+                                </TouchableOpacity>
+
+                                <TouchableOpacity style={{ backgroundColor: 'purple', height: 40, justifyContent: 'center', alignItems: 'center', }}>
+
+                                    <Text style={{ color: 'white', fontWeight: 'bold' }}> hubungi </Text>
+
+                                    <Text style={{ color: 'white', fontWeight: 'bold' }}> penjual </Text>
+
+                                </TouchableOpacity>
+
+
+                            </View>
+
+                        </TouchableOpacity>
+
+                    </View>
+
+                </ScrollView>
+
             </View>
         )
     }

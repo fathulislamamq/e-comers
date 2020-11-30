@@ -10,7 +10,7 @@ export default class Akun extends Component {
         super()
         this.state = {
             token: '',
-            username: 'Nama Pengguna',
+            username: '',
             data: '',
         }
     }
@@ -57,7 +57,7 @@ export default class Akun extends Component {
     }
     keluar = () => {
         AsyncStorage.clear()
-        this.props.navigation.replace('Home')
+        this.props.navigation.replace('Tab')
     }
     render() {
         return (
@@ -146,8 +146,8 @@ export default class Akun extends Component {
                                     <Text style={{ fontWeight: 'bold', fontSize: 18, color: 'white' }}>{this.state.data.name}</Text>
 
                                     <TouchableOpacity
-                                        onPress={() => this.setAkun()}>
-                                        <Text style={{ color: 'white' }}>setelan  </Text>
+                                        onPress={() => this.keluar()}>
+                                        <Text style={{ color: 'white' }}>keluar  </Text>
                                     </TouchableOpacity>
 
                                 </View>

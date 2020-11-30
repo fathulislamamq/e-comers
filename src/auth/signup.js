@@ -10,10 +10,12 @@ export default class Signup extends Component {
         email: '',
         password: '',
         password_confirmation: '',
+        loading: false
     };
     signUp = () => {
         const { name, email, password, password_confirmation } = this.state;
         const url = 'http://lava-store.herokuapp.com/api/register';
+        this.setState({ loading: true })
 
         fetch(url, {
             method: 'POST',
@@ -32,6 +34,7 @@ export default class Signup extends Component {
             .then((resJson) => {
                 console.log(resJson);
                 if (resJson.token) {
+                    this.setState({ loading: false })
                     ToastAndroid.show(
                         'Sign Up Berasil',
                         ToastAndroid.SHORT,
@@ -39,6 +42,7 @@ export default class Signup extends Component {
                     );
                     this.props.navigation.replace('Login')
                 } else {
+                    this.setState({ loading: false })
                     alert('error');
                 }
             })
@@ -52,9 +56,9 @@ export default class Signup extends Component {
     }
     render() {
         return (
-            <LinearGradient 
-            colors={['pink', 'purple']}
-            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <LinearGradient
+                colors={['pink', 'purple']}
+                style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
 
                 <View style={{ backgroundColor: '#bdbdbdd4', height: 560, width: 300, borderRadius: 5, paddingHorizontal: 10, paddingVertical: 5 }}>
 
@@ -123,7 +127,13 @@ export default class Signup extends Component {
                             marginVertical: 5
                         }}>
 
-                        <Text style={{ color: 'white', fontWeight: 'bold' }}>Daftar</Text>
+                        {this.state.loading ? (
+                            <ActivityIndicator size={25} color="white" />
+                        ) : (
+                                <Text
+                                    style={{ color: 'white', fontWeight: 'bold', }}>Daftar
+                                </Text>
+                            )}
 
 
                     </TouchableOpacity>

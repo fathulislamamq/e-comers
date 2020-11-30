@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, TouchableOpacity, ScrollView, Image, Modal,ActivityIndicator } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity, ScrollView, Image, Modal, ActivityIndicator } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/Feather'
@@ -10,21 +10,71 @@ export default class DetailBarang extends Component {
         super();
         this.state = {
             data: [],
+            jumlah: 0,
             token: '',
-            jumlah: 1,
             modal: false,
-            loading: false
+            loading: false,
         };
-
-        AsyncStorage.getItem('token').then((value) => {
-            if (value != '') {
-                this.setState({ token: value, data: this.props.route.params.item });
-                console.log(this.state.data);
+        AsyncStorage.getItem('token').then((token) => {
+            if (token != null) {
+                this.setState({ token: token });
+                this.produk();
             } else {
                 console.log('token tidak ada');
             }
         });
     }
+
+    produk = (id) => {
+        const id2 = this.props.route.params.item.id;
+        const url = `https://lava-store.herokuapp.com/api/product/watch/${id2}`;
+        this.setState({ loading: true });
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                Accept: 'aplication/json',
+                'Content-Type': 'aplication/json',
+                Authorization: `Bearer ${this.state.token}`
+            },
+        })
+            .then((respon) => respon.json())
+            .then((resJson) => {
+                console.log('ini resjson', resJson);
+                this.setState({ data: resJson.data, loading: false });
+            })
+            .catch((error) => {
+                console.log('error is' + error);
+                this.setState({ loading: false });
+            });
+    };
+
+    keranjang = () => {
+        const { jumlah } = this.state;
+        const url = `https://api-shop1.herokuapp.com/api/order/${this.state.data.id2}`;
+        this.setState({ loading: true });
+        fetch(url, {
+            method: 'POST',
+            body: JSON.stringify({ jumlah_barang: jumlah }),
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${this.state.token}`,
+            },
+        })
+            .then((res) => res.json())
+            .then((resjson) => {
+                console.log(resjson);
+                const { status } = resjson;
+                if (status == 'success') {
+                    this.setState({ loading: false });
+                    this.props.navigation.replace('Tab', { screen: 'Keranjang' });
+                } else {
+                    console.log('error');
+                    this.setState({ loading: false });
+                }
+            })
+            .catch((err) => console.log('Ada kesalahan. ' + err));
+    };
 
     kembali = () => {
         this.props.navigation.navigate('Tab')
@@ -46,7 +96,7 @@ export default class DetailBarang extends Component {
                     style={styles.header}>
 
                     <TouchableOpacity
-                        style={{width:'12%',padding:7}}
+                        style={{ width: '12%', padding: 7 }}
                         onPress={() => this.kembali()}>
 
                         <Icon name='arrow-left' size={30} color='white' />
@@ -65,14 +115,15 @@ export default class DetailBarang extends Component {
 
                     <View>
                         <Image
-                            source={{ uri: this.props.route.params.item.image }}
+                            source={{ uri: this.state.data.image }}
                             style={{ height: 200, width: '100%', }}
                         />
                     </View>
 
                     <View style={{ paddingBottom: 20, backgroundColor: 'white', elevation: 5, marginBottom: 5 }}>
-                        <Text style={{ fontWeight: 'bold', marginBottom: 10, fontSize: 20 }}>  {this.props.route.params.item.name}</Text>
-                        <Text>  {"Rp." + this.props.route.params.item.price}</Text>
+                        <Text style={{ fontWeight: 'bold', marginBottom: 10, fontSize: 20 }}>  {this.state.data.name}</Text>
+
+                        <Text>  {"Rp." + this.state.data.price}</Text>
 
                         <TouchableOpacity style={{ position: 'absolute', right: 5, bottom: 5 }}>
 
@@ -81,10 +132,23 @@ export default class DetailBarang extends Component {
                         </TouchableOpacity>
 
                     </View>
+
                     <View style={{ padding: 5, backgroundColor: 'white', elevation: 5, marginBottom: 5 }}>
-                        <Text style={{ fontWeight: 'bold', marginBottom: 10, fontSize: 20 }}>Deskripsi</Text>
-                        <Text>{this.props.route.params.item.description}</Text>
+
+                        <Text style={{ fontWeight: 'bold', marginBottom: 10, fontSize: 20 }}>Stock</Text>
+
+                        <Text>{this.state.data.status}</Text>
+
                     </View>
+
+                    <View style={{ padding: 5, backgroundColor: 'white', elevation: 5, marginBottom: 5 }}>
+
+                        <Text style={{ fontWeight: 'bold', marginBottom: 10, fontSize: 20 }}>Deskripsi</Text>
+
+                        <Text>{this.state.data.description}</Text>
+
+                    </View>
+
                 </ScrollView>
 
                 <Modal
@@ -153,16 +217,22 @@ export default class DetailBarang extends Component {
 
                                         <Text>Total Harga</Text>
 
-                                    </View>
-
-
-                                    <View style={{ backgroundColor: 'purple', width: '50%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
-
-                                        <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white' }}>
+                                        <Text style={{ fontSize: 17, fontWeight: 'bold' }}>
                                             Rp. {this.props.route.params.item.price * this.state.jumlah}
                                         </Text>
 
                                     </View>
+
+
+                                    <TouchableOpacity
+                                        onPress={() => this.keranjang()}
+                                        style={{ backgroundColor: 'purple', width: '50%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
+
+                                        <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white' }}>
+                                            Masukkan Keranjang
+                                        </Text>
+
+                                    </TouchableOpacity>
 
                                 </View>
                             </View>
