@@ -12,13 +12,9 @@ function TabTransaksi(){
     return(
         <Top.Navigator
         tabBarOptions={{
-            scrollEnabled:true,
-            indicatorStyle:{backgroundColor:'grey'}
+            indicatorStyle:{backgroundColor:'blue'}
         }}>
-            <Top.Screen name='Keranjang' component={CheckOut} />
-            <Top.Screen name='Belum bayar' component={BelumDibayar} />
-            <Top.Screen name='Dikemas' component={Dikemas} />
-            <Top.Screen name='Dikirim' component={Dikirim} />
+            <Top.Screen name='Diproses' component={CheckOut} />
             <Top.Screen name='Selesai' component={PesananSelesai} />
 
         </Top.Navigator>

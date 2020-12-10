@@ -10,7 +10,8 @@ import {
     Image,
     ToastAndroid,
     StyleSheet,
-    ActivityIndicator
+    ActivityIndicator,
+    RefreshControl
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/Feather'
@@ -28,7 +29,7 @@ export default class Penjual extends Component {
             description: '',
             price: '',
             weight: '',
-            image: '',
+            image: { uri: '' },
             status: '',
             modalAdd: false,
             loading: false
@@ -49,6 +50,7 @@ export default class Penjual extends Component {
         } = this.state
 
         const url = 'http://lava-store.herokuapp.com/api/product';
+        this.setState({ loading: true })
 
         const body = {
             name: name,
@@ -58,19 +60,44 @@ export default class Penjual extends Component {
             weight: weight,
             status: status
         }
+        const formDatas = new FormData()
+        if (image.uri) {
+            formDatas.append('image', {
+                name: image.fileName,
+                type: image.type,
+                uri:
+                    Platform.OS == 'android'
+                        ? image.uri
+                        : image.uri.replace('file://', ''),
+            })
+        }
+
+        // Object.keys(body).forEach((key) => {
+        //     data.append(key, body[key])
+        // })
+        formDatas.append('name', name)
+        formDatas.append('category_id', category_id)
+        formDatas.append('description', description)
+        formDatas.append('price', price)
+        formDatas.append('weight', weight)
+        formDatas.append('status', status)
+
+        console.log('ini formDatas',formDatas);
 
         fetch(url, {
             method: 'POST',
-            body: this.createFormData(image, body),
             headers: {
                 accept: 'application/json',
                 Authorization: `Bearer${this.state.token}`
             },
+            body: formDatas
+            // this.createFormData(image, body),
         })
             .then((respon) => respon.json())
             .then((resJson) => {
                 console.log(resJson);
                 if (resJson.token) {
+                    this.setState({ loading: false })
                     ToastAndroid.show(
                         'Barang berhasil di Upload',
                         ToastAndroid.SHORT,
@@ -80,12 +107,14 @@ export default class Penjual extends Component {
                     this.setState({ modalAdd: false })
                     this.props.navigation.navigate('Tab')
                 } else {
+                    this.setState({ loading: false })
                     this.setState({ modalAdd: false })
                     console.log(error);
                     alert('ada kesalahan saat upload')
                 }
             })
             .catch((error) => {
+                this.setState({ loading: false })
                 this.setState({ modalAdd: false })
                 console.log('errornya adalah ' + error);
             })
@@ -141,6 +170,27 @@ export default class Penjual extends Component {
                 console.log('errornya adalah: ' + error);
             })
     }
+    hapus = (id) => {
+        const idbarang=id
+        const url = `https://lava-store.herokuapp.com/api/product/${idbarang}`;
+        console.log(idbarang);
+        fetch(url, {
+            method: 'DELETE',
+            headers: {
+                Accept: 'aplication/json',
+                'Content-Type': 'aplication/json',
+                Authorization: `Bearer ${this.state.token}`,
+            },
+        })
+            .then((respon) => respon.json())
+            .then((resJson) => {
+                console.log(resJson);
+                this.lihat();
+            })
+            .catch((error) => {
+                console.log('error is' + error);
+            });
+    };
 
     componentDidMount() {
         AsyncStorage.getItem('token').then((token) => {
@@ -166,11 +216,11 @@ export default class Penjual extends Component {
                     onRequestClose={() => this.setState({ modalAdd: false })}>
 
                     <LinearGradient
-                        colors={['pink', '#707070']}
+                        colors={['deepskyblue', 'blue']}
                         style={styles.modalGradasi}>
 
                         <LinearGradient
-                            colors={['pink', '#707070']}
+                            colors={['deepskyblue', 'blue']}
                             style={styles.modalHeader}>
 
                             <Text style={styles.textModalHeader}> Mulai Jual </Text>
@@ -207,11 +257,12 @@ export default class Penjual extends Component {
                                     onChangeText={(text) => this.setState({ name: text })}
                                     style={styles.inputModal} />
 
-                                <Text style={styles.judulInputModal}>Brand Barang</Text>
+                                <Text style={styles.judulInputModal}>kategori ID</Text>
 
                                 <TextInput
-                                    placeholder='brand barang'
+                                    placeholder='kategori id'
                                     value={this.state.category_id}
+                                    keyboardType='number-pad'
                                     onChangeText={(text) => this.setState({ category_id: text })}
                                     style={styles.inputModal} />
 
@@ -220,6 +271,7 @@ export default class Penjual extends Component {
                                 <TextInput
                                     placeholder='berat barang'
                                     value={this.state.weight}
+                                    keyboardType='number-pad'
                                     onChangeText={(text) => this.setState({ weight: text })}
                                     style={styles.inputModal} />
 
@@ -228,6 +280,7 @@ export default class Penjual extends Component {
                                 <TextInput
                                     placeholder='harga barang'
                                     value={this.state.price}
+                                    keyboardType='number-pad'
                                     onChangeText={(text) => this.setState({ price: text })}
                                     style={styles.inputModal} />
 
@@ -236,6 +289,7 @@ export default class Penjual extends Component {
                                 <TextInput
                                     placeholder='stock barang'
                                     value={this.state.status}
+                                    keyboardType='number-pad'
                                     onChangeText={(text) => this.setState({ status: text })}
                                     style={styles.inputModal} />
 
@@ -277,10 +331,15 @@ export default class Penjual extends Component {
                                     <TouchableOpacity
                                         onPress={() => this.tambahBarang()}
                                     >
+                                        <View style={styles.buttonModal}>
 
-                                        <View
-                                            style={styles.buttonModal}>
-                                            <Text style={{ color: 'white' }}>Posting</Text>
+                                            {this.state.loading ? (
+                                                <ActivityIndicator size={25} color="white" />
+                                            ) : (
+                                                    <Text style={{ color: 'white' }}>Posting</Text>
+
+                                                )}
+
                                         </View>
 
                                     </TouchableOpacity>
@@ -319,7 +378,8 @@ export default class Penjual extends Component {
 
                                         <View style={{ margin: 0.1 }}>
 
-                                            <TouchableOpacity>
+                                            <TouchableOpacity
+                                            onPress={()=>this.hapus(value.id)}>
 
                                                 <View
                                                     style={{ height: 35, backgroundColor: 'red', justifyContent: 'center', alignItems: 'center' }}>
@@ -357,7 +417,7 @@ export default class Penjual extends Component {
                     style={{ alignItems: 'center', position: 'absolute', bottom: 20, right: 20 }}>
 
                     <LinearGradient
-                        colors={['pink', '#707070']}
+                        colors={['deepskyblue', 'blue']}
                         style={{ borderRadius: 50, width: 40, height: 40, justifyContent: 'center', alignItems: 'center' }}>
 
                         <Icon name='plus' size={40} color='white' />

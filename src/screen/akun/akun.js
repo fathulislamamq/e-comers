@@ -32,6 +32,7 @@ export default class Akun extends Component {
 
             .then((respon) => respon.json())
             .then((resJson) => {
+                AsyncStorage.setItem('id',resJson.data[0].id.toString())
                 console.log(resJson);
                 this.setState({ data: resJson.data[0] })
             })
@@ -65,7 +66,7 @@ export default class Akun extends Component {
                 {this.state.token == '' ? (
 
                     <LinearGradient
-                        colors={['pink', 'purple']}
+                        colors={['deepskyblue', 'blue']}
                         style={{ height: 110, elevation: 5, alignItems: 'center', padding: 5 }}>
 
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -136,10 +137,15 @@ export default class Akun extends Component {
                         <View style={{ flex: 1 }}>
 
                             <LinearGradient
-                                colors={['pink', 'purple']}
+                                colors={['deepskyblue', 'blue']}
                                 style={{ flexDirection: 'row', height: 100, elevation: 5, alignItems: 'center', padding: 10 }}>
 
                                 <View style={{ borderRadius: 50, height: 80, width: 80, backgroundColor: 'white' }}>
+
+                                <Image
+                                    style={{ height: '100%', width: '100%',borderRadius:50 }}
+                                    source={require('../../assets/image/tas_belanja_3d.png')}
+                                />
 
                                 </View>
                                 <View style={{ padding: 10 }}>

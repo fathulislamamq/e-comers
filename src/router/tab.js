@@ -12,8 +12,7 @@ const Buttom = createMaterialBottomTabNavigator()
 function Tab() {
     return (
         <Buttom.Navigator
-            inactiveColor='black'
-            barStyle={{ backgroundColor: '#707070' }}
+            inactiveColor='#707070'
             screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused, color, size }) => {
                     let iconName;
@@ -27,7 +26,7 @@ function Tab() {
                     } else if (route.name === 'Chat') {
                         iconName = focused ? 'md-chatbubbles' : 'md-chatbubbles'
                         sizeIcon = size
-                        colorCustom = focused?'#1fa2ff':'black'
+                        colorCustom = focused?'deepskyblue':'black'
                     } else if (route.name === 'Transaksi') {
                         iconName = focused ? 'md-card' : 'md-card'
                         sizeIcon = size

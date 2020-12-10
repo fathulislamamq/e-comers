@@ -34,7 +34,7 @@ export default class HalamanB extends Component {
         })
             .then((respon) => respon.json())
             .then((resJson) => {
-                console.log(resJson[0].data);
+                console.log('lihat barang home',resJson[0].data);
                 this.setState({ data: resJson[0].data, loading: false })
             })
             .catch((error) => {
@@ -63,7 +63,7 @@ export default class HalamanB extends Component {
             <View style={{ flex: 1 }}>
 
                 <LinearGradient
-                    colors={['pink', 'purple']}
+                    colors={['deepskyblue', 'blue']}
                     style={styles.header}>
 
                     <TouchableOpacity
@@ -386,28 +386,28 @@ export default class HalamanB extends Component {
 
                         <View style={{ flexWrap: 'wrap', flexDirection: 'row', }}>
 
-                            {this.state.data.map((value, key) => {
+                            {this.state.data.map((item, key) => {
                                 return (
                                     <View key={key}>
 
                                         <View
                                             style={{ backgroundColor: 'white', width: 165, height: 270, margin: 5 }}>
 
-                                            <View style={{ height: '50%', width: '100%', backgroundColor: 'pink', alignItems: 'center' }}>
+                                            <View style={{ height: '50%', width: '100%', backgroundColor: 'deepskyblue', alignItems: 'center' }}>
                                                 <Image
-                                                    source={{ uri: value.image }}
+                                                    source={{ uri: item.image }}
                                                     style={{ height: '100%', width: '100%' }}
                                                 />
                                             </View>
 
                                             <View style={{ padding: 5, height: '25%' }}>
-                                                <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>{value.name}</Text>
-                                                <Text>{'Rp ' + value.price}</Text>
+                                                <Text style={{ fontWeight: 'bold', marginBottom: 10 }}>{item.name}</Text>
+                                                <Text>{'Rp ' + item.price}</Text>
                                             </View>
 
                                             <TouchableOpacity
                                                 onPress={() => {
-                                                    this.props.navigation.navigate('DetailBarang', { item: value })
+                                                    this.props.navigation.navigate('DetailBarang', { item: item })
                                                 }}
                                                 style={{ backgroundColor: 'black', borderRadius: 5, width: 100, height: 30, padding: 5, margin: 5 }}>
                                                 <Text style={{ color: 'white', fontWeight: 'bold' }}>selengkapnya</Text>

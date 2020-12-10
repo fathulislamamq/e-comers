@@ -18,39 +18,40 @@ export default class DetailBarang extends Component {
         AsyncStorage.getItem('token').then((token) => {
             if (token != null) {
                 this.setState({ token: token });
-                this.produk();
+                // this.produk();
             } else {
                 console.log('token tidak ada');
             }
         });
     }
 
-    produk = (id) => {
-        const id2 = this.props.route.params.item.id;
-        const url = `https://lava-store.herokuapp.com/api/product/watch/${id2}`;
-        this.setState({ loading: true });
-        fetch(url, {
-            method: 'GET',
-            headers: {
-                Accept: 'aplication/json',
-                'Content-Type': 'aplication/json',
-                Authorization: `Bearer ${this.state.token}`
-            },
-        })
-            .then((respon) => respon.json())
-            .then((resJson) => {
-                console.log('ini resjson', resJson);
-                this.setState({ data: resJson.data, loading: false });
-            })
-            .catch((error) => {
-                console.log('error is' + error);
-                this.setState({ loading: false });
-            });
-    };
+    // produk = () => {
+    //     const id = this.props.route.params.item;
+    //     const url = `https://lava-store.herokuapp.com/api/product/watch/${id}`;
+    //     this.setState({ loading: true });
+    //     fetch(url, {
+    //         method: 'GET',
+    //         headers: {
+    //             Accept: 'aplication/json',
+    //             'Content-Type': 'aplication/json',
+    //             Authorization: `Bearer ${this.state.token}`
+    //         },
+    //     })
+    //         .then((respon) => respon.json())
+    //         .then((resJson) => {
+    //             console.log(this.id.id)
+    //             this.setState({ data: resJson.data, loading: false });
+    //         })
+    //         .catch((error) => {
+    //             console.log('error is' + error);
+    //             this.setState({ loading: false });
+    //         });
+    // };
 
     keranjang = () => {
         const { jumlah } = this.state;
-        const url = `https://api-shop1.herokuapp.com/api/order/${this.state.data.id2}`;
+        const { item } = this.props.route.params;
+        const url = `https://lava-store.herokuapp.com/api/order/${item.id}`;
         this.setState({ loading: true });
         fetch(url, {
             method: 'POST',
@@ -65,11 +66,14 @@ export default class DetailBarang extends Component {
             .then((resjson) => {
                 console.log(resjson);
                 const { status } = resjson;
-                if (status == 'success') {
+                if (status == 'Success') {
                     this.setState({ loading: false });
-                    this.props.navigation.replace('Tab', { screen: 'Keranjang' });
+                    this.props.navigation.replace('Tab', { screen: 'Transaksi' });
+                    alert('berhasil memesan')
+
                 } else {
-                    console.log('error');
+                    console.log('ini datanya', item);
+                    console.log('ini error');
                     this.setState({ loading: false });
                 }
             })
@@ -88,11 +92,14 @@ export default class DetailBarang extends Component {
 
 
     render() {
+
+        const { item } = this.props.route.params;
+
         return (
             <View style={{ flex: 1 }}>
 
                 <LinearGradient
-                    colors={['pink', 'purple']}
+                    colors={['deepskyblue', 'blue']}
                     style={styles.header}>
 
                     <TouchableOpacity
@@ -113,19 +120,21 @@ export default class DetailBarang extends Component {
 
                 <ScrollView>
 
-                    <View>
+                    <TouchableOpacity>
                         <Image
-                            source={{ uri: this.state.data.image }}
+                            source={{ uri: item.image }}
                             style={{ height: 200, width: '100%', }}
                         />
-                    </View>
+                    </TouchableOpacity>
 
                     <View style={{ paddingBottom: 20, backgroundColor: 'white', elevation: 5, marginBottom: 5 }}>
-                        <Text style={{ fontWeight: 'bold', marginBottom: 10, fontSize: 20 }}>  {this.state.data.name}</Text>
+                        <Text style={{ fontWeight: 'bold', marginBottom: 10, fontSize: 20 }}>  {item.name}</Text>
 
-                        <Text>  {"Rp." + this.state.data.price}</Text>
+                        <Text>  {"Rp." + item.price}</Text>
 
-                        <TouchableOpacity style={{ position: 'absolute', right: 5, bottom: 5 }}>
+                        <TouchableOpacity
+                            onPress={() => this.setState({ modal: true })}
+                            style={{ position: 'absolute', right: 10, bottom: 10 }}>
 
                             <Icon name='heart' size={20} color='red' />
 
@@ -137,7 +146,7 @@ export default class DetailBarang extends Component {
 
                         <Text style={{ fontWeight: 'bold', marginBottom: 10, fontSize: 20 }}>Stock</Text>
 
-                        <Text>{this.state.data.status}</Text>
+                        <Text>{item.status}</Text>
 
                     </View>
 
@@ -145,7 +154,7 @@ export default class DetailBarang extends Component {
 
                         <Text style={{ fontWeight: 'bold', marginBottom: 10, fontSize: 20 }}>Deskripsi</Text>
 
-                        <Text>{this.state.data.description}</Text>
+                        <Text>{item.description}</Text>
 
                     </View>
 
@@ -180,7 +189,7 @@ export default class DetailBarang extends Component {
 
                             <View>
 
-                                <Text style={{ fontSize: 17, color: 'purple' }}>
+                                <Text style={{ fontSize: 17, color: 'blue' }}>
                                     Atur jumlah
                                         </Text>
 
@@ -226,11 +235,15 @@ export default class DetailBarang extends Component {
 
                                     <TouchableOpacity
                                         onPress={() => this.keranjang()}
-                                        style={{ backgroundColor: 'purple', width: '50%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                                        style={{ backgroundColor: 'blue', width: '50%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
 
-                                        <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white' }}>
-                                            Masukkan Keranjang
-                                        </Text>
+                                        {this.state.loading ? (
+                                            <ActivityIndicator size={25} color="white" />
+                                        ) : (
+                                                <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white' }}>
+                                                    Beli Sekarang
+                                                </Text>
+                                            )}
 
                                     </TouchableOpacity>
 
@@ -246,11 +259,12 @@ export default class DetailBarang extends Component {
                     <View>
                         <View
                             style={{
-                                flexDirection: 'row', height: 50, alignItems: 'center', padding: 5, backgroundColor: 'grey'
+                                flexDirection: 'row', height: 50, alignItems: 'center', padding: 5, backgroundColor: 'deepskyblue'
                             }}
                         >
 
                             <TouchableOpacity
+                                onPress={() => this.props.navigation.navigate('DetailChat', { item: item })}
                                 style={{ width: '50%', alignItems: 'center' }}>
                                 <Icon name="message-square" size={30} />
                                 <Text>chat </Text>

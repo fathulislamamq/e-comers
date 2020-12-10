@@ -9,7 +9,7 @@ function TabAkun(){
     return(
         <Top.Navigator
         tabBarOptions={{
-            indicatorStyle:{backgroundColor:'grey'}
+            indicatorStyle:{backgroundColor:'blue'}
         }}>
             <Top.Screen name='Profil' component={Pembeli} />
             <Top.Screen name='Toko' component={Penjual} />

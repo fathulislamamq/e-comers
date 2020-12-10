@@ -8,7 +8,7 @@ export default class Transaksi extends Component {
         return (
             <View style={{ flex: 1 }}>
                 <LinearGradient
-                colors={['pink','purple']}
+                colors={['deepskyblue', 'blue']}
                 style={{ height: 50,backgroundColor:'#bdbdbdd4',justifyContent:'center',padding:5 }}>
                     <Text style={{ fontWeight:'bold',fontSize:18,color:'white' }}> Transaksi </Text>
                 </LinearGradient>

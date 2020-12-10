@@ -29,7 +29,7 @@ export default class Login extends Component {
     })
       .then((res) => res.json())
       .then((resjson) => {
-        console.log(resjson);
+        console.log('ini resjsonnya',resjson);
         const { token } = resjson
         if (token) {
           AsyncStorage.setItem('token', token)
@@ -59,7 +59,7 @@ export default class Login extends Component {
   render() {
     return (
       <LinearGradient
-        colors={['pink', 'purple']}
+        colors={['deepskyblue', 'blue']}
         style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
 
         <View style={{ height: 460, backgroundColor: '#bdbdbdd4', marginVertical: 50, width: 300, borderRadius: 5, padding: 10 }}>
